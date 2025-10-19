@@ -30,7 +30,9 @@ setUpSocket(app);
 app.post('/data/match', async (req, res) => {
     const body = req.body as MatchData;
 
-    await new matchApp(body).save();
+    await matchApp.replaceOne({ 'metadata.robotTeam': body.metadata.robotTeam, 'metadata.matchNumber': body.metadata.matchNumber }, body).setOptions({upsert: true});
+
+    //await new matchApp(body).save();
     updateMatchStatus();
     console.log(
         chalk.gray(
